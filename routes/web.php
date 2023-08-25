@@ -28,7 +28,9 @@ Route::post('/validate-token', [AuthController::class, 'validateToken']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
+Route::get('/user', [AuthController::class, 'user']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [AuthController::class, 'user']);
+    
 });

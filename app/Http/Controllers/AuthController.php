@@ -72,7 +72,10 @@ class AuthController extends Controller
             $user = User::where('access_token', $access_token)->first();
 
             if ($user) {
-                return response()->json(['valid' => true]);
+                return response()->json([
+                    'user' => new UserResource($user),
+                    'valid' => true
+                ]);
             }
         }
 
