@@ -85,7 +85,28 @@ class ScrapeNews extends Command
     public function handle()
     {
         $apiKey = env('NEWS_API_KEY');
-        // $sources = ['bbc-news', 'cnn', 'reuters']; // Add more sources as needed
+        
+        $sources = [ 
+            'bbc-news', 
+            'cnn', 
+            'reuters', 
+            // 'abc-news',
+            // 'bloomberg',
+            // 'cbs-news',
+            // 'fox-news',
+            // 'google-news',
+            // 'hacker-news',
+            // 'independent',
+            // 'msnbc',
+            // 'nbc-news',
+            // 'rt',
+            // 'the-washington-post',
+            // 'time',
+            // 'vice-news',
+            // 'wired',
+        ]; // Add more sources as needed
+        
+
         $endpoint = 'https://newsapi.org/v2/top-headlines';
         $source_endpoint = 'https://newsapi.org/v2/top-headlines/sources';
 
@@ -111,26 +132,32 @@ class ScrapeNews extends Command
             ]);
         }
 
-                
-        $sources = ['bbc-news', 'cnn', 'reuters'];
-        $response = $client->get($endpoint, [
-            'query' => [
-                'apiKey' => $apiKey,
-                //'country' => 'us', // adjust based on your needs
-                'sources' => $sources[2],
-            ]
-        ]);
+
+        foreach($sources as $source) {
+
+            $response = $client->get($endpoint, [
+                'query' => [
+                    'apiKey' => $apiKey,
+                    //'country' => 'us', // adjust based on your needs
+                    'sources' => $source,
+                ]
+            ]);
+
+
+            $articles = json_decode($response->getBody())->articles;
+
+            foreach ($articles as $article) {
+                Article::create([
+                    'title' => $article->title,
+                    'description' => $article->description,
+                    'source' => $article->source->name,
+                ]);
+            }
+
+        }
+        
 
         
-        $articles = json_decode($response->getBody())->articles;
-
-        foreach ($articles as $article) {
-            Article::create([
-                'title' => $article->title,
-                'description' => $article->description,
-                'source' => $article->source->name,
-            ]);
-        }
 
         $this->info('News scraped and saved successfully.');
     }
