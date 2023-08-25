@@ -31,6 +31,15 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/user', [AuthController::class, 'user']);
 
 
+Route::middleware('auth:api')->group(function () {
+    Route::get('/preferences', 'UserController@getPreferences');
+    Route::put('/preferences', 'UserController@updatePreferences');
+    Route::get('/articles', 'ArticleController@getArticles');
+});
+
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     
 });
