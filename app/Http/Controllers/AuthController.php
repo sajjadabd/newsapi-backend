@@ -25,7 +25,7 @@ class AuthController extends Controller
     private function generateAndSaveAccessToken(User $user)
     {
         // Generate a unique access token using any logic you prefer
-        $access_token = generateAccessToken() // Example: Generating a random hex token
+        $access_token = $this->generateAccessToken(); // Example: Generating a random hex token
         $user->update(['access_token' => $access_token]);
         
         return $access_token;
