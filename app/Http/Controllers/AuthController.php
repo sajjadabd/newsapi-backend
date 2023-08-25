@@ -14,6 +14,23 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
+    private function generateAccessToken()
+    {
+        // Generate a unique access token using any logic you prefer
+        return bin2hex(random_bytes(32)); // Example: Generating a random hex token
+    }
+
+
+    private function generateAndSaveAccessToken(User $user)
+    {
+        // Generate a unique access token using any logic you prefer
+        $access_token = generateAccessToken() // Example: Generating a random hex token
+        $user->update(['access_token' => $access_token]);
+        
+        return $access_token;
+    }
+
     
     // register a new user method
     public function register(RegisterRequest $request) {
@@ -29,12 +46,13 @@ class AuthController extends Controller
             ['password' => bcrypt($request->password)]
         ));
 
-        $token = $user->createToken('access_token')->plainTextToken;
+        //$token = $user->createToken('access_token')->plainTextToken; // for sanctum
 
+        $access_token = $this->generateAndSaveAccessToken($user);
 
         return response()->json([
             'user' => new UserResource($user),
-            'access_token' => $token,
+            'access_token' => $access_token,
         ]);
     }
 
@@ -53,12 +71,16 @@ class AuthController extends Controller
         
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('access_token')->plainTextToken;
+
+            //$token = $user->createToken('access_token')->plainTextToken;
             
+            $access_token = $this->generateAndSaveAccessToken($user);
+
             return response()->json([
                 'user' => new UserResource($user),
-                'access_token' => $token,
+                'access_token' => $access_token,
             ]);
+
         }
 
         return response()->json(['error' => 'Invalid credentials'], 401);
@@ -68,12 +90,24 @@ class AuthController extends Controller
 
     // logout a user method
     public function logout(Request $request) {
-        $request->user()->currentAccessToken()->delete();
 
+        $access_token = $request->bearerToken(); // Get the access token from the request
 
-        return response()->json([
-            'message' => 'Logged out successfully!'
-        ]);
+        if ($access_token) {
+            // Find the user based on the provided access token
+            $user = User::where('access_token', $access_token)->first();
+
+            if ($user) {
+                // Delete the access token from the user's record
+                $user->update(['access_token' => null]);
+                return response()->json([
+                    'success' => 'true',
+                    'message' => 'Logged out successfully'
+                ]);
+            }
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     // get the authenticated user method
