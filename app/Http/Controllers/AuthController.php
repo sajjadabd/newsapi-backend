@@ -56,6 +56,29 @@ class AuthController extends Controller
         ]);
     }
 
+
+
+
+
+    public function validateToken(Request $request)
+    {
+        $request->validate([
+            'access_token' => ['required'],
+        ]);
+
+        $access_token = $request->input('access_token');
+
+        if ($access_token) {
+            $user = User::where('access_token', $access_token)->first();
+
+            if ($user) {
+                return response()->json(['valid' => true]);
+            }
+        }
+
+        return response()->json(['valid' => false]);
+    }
+
     
 
 
