@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use jcobhams\newsapi\NewsAPI;
 use \App\Models\Article;
+use \App\Models\Source;
+use \App\Models\Category;
 
 class ScrapeNews extends Command
 {
@@ -34,7 +36,29 @@ class ScrapeNews extends Command
 
         $newsapi = new NewsAPI($apiKey);
 
+
+        $all_sources = $newsapi->getSources();
+        $all_categories = $newsapi->getCategories();
+
+        foreach ($all_sources as $source) {
+            Source::create([
+                'title' => $source['title'],
+                'description' => $source['description'],
+                'source' => $source['category'],
+            ]);
+        }
+
+
+        foreach ($all_categories as $category) {
+            Category::create([
+                'title' => $category['title'],
+            ]);
+        }
+
+
         foreach ($sources as $source) {
+            
+
             $articles = $newsapi->getEverything([
                 'sources' => $source,
             ]);
