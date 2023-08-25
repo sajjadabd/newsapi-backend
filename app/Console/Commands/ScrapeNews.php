@@ -100,14 +100,14 @@ class ScrapeNews extends Command
                 'apiKey' => $apiKey,
             ]
         ]);        
-
-
+        $all_sources = json_decode($all_sources->getBody())->sources;
 
         foreach ($all_sources as $source) {
             Source::create([
-                'title' => $source['title'],
-                'description' => $source['description'],
-                'source' => $source['category'],
+                'slug' => $source->id,
+                'title' => $source->name,
+                'description' => $source->description,
+                'category' => $source->category,
             ]);
         }
 
