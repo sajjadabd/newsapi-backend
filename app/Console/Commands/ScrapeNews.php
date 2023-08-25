@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use GuzzleHttp\Client;
-use jcobhams\newsapi\NewsAPI;
+use jcobhams\NewsApi\NewsApi;
 use \App\Models\Article;
 use \App\Models\Source;
 use \App\Models\Category;
@@ -29,6 +29,7 @@ class ScrapeNews extends Command
     /**
      * Execute the console command.
      */
+    /*
     public function handle()
     {
         $apiKey = env('NEWS_API_KEY');
@@ -37,8 +38,10 @@ class ScrapeNews extends Command
         $newsapi = new NewsAPI($apiKey);
 
 
-        $all_sources = $newsapi->getSources();
-        $all_categories = $newsapi->getCategories();
+        // getSources requires a query parameter like 'category'
+        $categoryForSource = 'business'; 
+        $all_sources = $newsapi->getSources($categoryForSource);
+        //$all_categories = $newsapi->getCategories();
 
         foreach ($all_sources as $source) {
             Source::create([
@@ -48,17 +51,16 @@ class ScrapeNews extends Command
             ]);
         }
 
-
+        
         foreach ($all_categories as $category) {
             Category::create([
                 'title' => $category['title'],
             ]);
         }
-
+        
 
         foreach ($sources as $source) {
             
-
             $articles = $newsapi->getEverything([
                 'sources' => $source,
             ]);
@@ -73,28 +75,57 @@ class ScrapeNews extends Command
         }
 
         $this->info('News scraped and saved successfully.');
+
+
     }
 
-    /*
+    */
+
+    
     public function handle()
     {
         $apiKey = env('NEWS_API_KEY');
         // $sources = ['bbc-news', 'cnn', 'reuters']; // Add more sources as needed
         $endpoint = 'https://newsapi.org/v2/top-headlines';
-        
-        $client = new Client();
+        $source_endpoint = 'https://newsapi.org/v2/top-headlines/sources';
+
+        $client = new Client([
+            'verify' => false,
+        ]);
+
+
+
+        $all_sources = $client->get($source_endpoint, [
+            'query' => [
+                'apiKey' => $apiKey,
+            ]
+        ]);        
+
+
+
+        foreach ($all_sources as $source) {
+            Source::create([
+                'title' => $source['title'],
+                'description' => $source['description'],
+                'source' => $source['category'],
+            ]);
+        }
+
+                
+        $sources = ['bbc-news', 'cnn', 'reuters'];
         $response = $client->get($endpoint, [
             'query' => [
                 'apiKey' => $apiKey,
-                'country' => 'us', // adjust based on your needs
-                'sources' => $source,
+                //'country' => 'us', // adjust based on your needs
+                'sources' => $sources[2],
             ]
         ]);
+
         
         $articles = json_decode($response->getBody())->articles;
 
         foreach ($articles as $article) {
-            NewsArticle::create([
+            Article::create([
                 'title' => $article->title,
                 'description' => $article->description,
                 'source' => $article->source->name,
@@ -103,5 +134,6 @@ class ScrapeNews extends Command
 
         $this->info('News scraped and saved successfully.');
     }
-    */
+    
+
 }

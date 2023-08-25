@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('source');
-            $table->string('author');
-            $table->string('url');
-            $table->string('urlToImage');
-            $table->string('publishedAt');
-            $table->text('content');
+            $table->string('author')->nullable();
+            $table->string('url')->nullable();
+            $table->string('urlToImage')->nullable();
+            $table->string('publishedAt')->nullable();
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
