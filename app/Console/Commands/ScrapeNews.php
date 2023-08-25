@@ -87,9 +87,9 @@ class ScrapeNews extends Command
         $apiKey = env('NEWS_API_KEY');
         
         $sources = [ 
-            'bbc-news', 
-            'cnn', 
-            'reuters', 
+            //'bbc-news', 
+            //'cnn', 
+            //'reuters', 
             // 'abc-news',
             // 'bloomberg',
             // 'cbs-news',
@@ -105,6 +105,8 @@ class ScrapeNews extends Command
             // 'vice-news',
             // 'wired',
         ]; // Add more sources as needed
+
+        $sources = Source::all();
         
 
         $endpoint = 'https://newsapi.org/v2/top-headlines';
@@ -115,7 +117,7 @@ class ScrapeNews extends Command
         ]);
 
 
-
+        /*
         $all_sources = $client->get($source_endpoint, [
             'query' => [
                 'apiKey' => $apiKey,
@@ -131,7 +133,7 @@ class ScrapeNews extends Command
                 'category' => $source->category,
             ]);
         }
-
+        */
 
         foreach($sources as $source) {
 
@@ -139,7 +141,7 @@ class ScrapeNews extends Command
                 'query' => [
                     'apiKey' => $apiKey,
                     //'country' => 'us', // adjust based on your needs
-                    'sources' => $source,
+                    'sources' => $source['slug'],
                 ]
             ]);
 

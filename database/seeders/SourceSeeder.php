@@ -12,6 +12,23 @@ class SourceSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $sources = [
+            [
+                'slug' => 'bbc-news',
+                'title' => 'BBC News',
+            ],
+            [
+                'slug' => 'cnn',
+                'title' => 'CNN',
+            ],
+            [
+                'slug' => 'reuters',
+                'title' => 'Reuters',
+            ],
+        ];
+
+        foreach ($sources as $source) {
+            Source::create($source);
+        }
     }
 }
