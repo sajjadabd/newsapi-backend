@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 use \App\Http\Controllers\AuthController;
+use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\ArticleController;
 
 
 Route::get('/', function () {
@@ -30,13 +32,17 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/user', [AuthController::class, 'user']);
 
+Route::get('/preferences', [UserController::class, 'getPreferences']);
+Route::put('/preferences', [UserController::class, 'updatePreferences']);
+Route::get('/articles', [ArticleController::class, 'getArticles']);
 
+/*
 Route::middleware('auth:api')->group(function () {
     Route::get('/preferences', 'UserController@getPreferences');
     Route::put('/preferences', 'UserController@updatePreferences');
     Route::get('/articles', 'ArticleController@getArticles');
 });
-
+*/
 
 
 
