@@ -148,11 +148,13 @@ class ScrapeNews extends Command
 
             $articles = json_decode($response->getBody())->articles;
 
+            
             foreach ($articles as $article) {
                 Article::create([
                     'title' => $article->title,
                     'description' => $article->description,
                     'source' => $article->source->name,
+                    'source_id' => $source->id,
                 ]);
             }
 

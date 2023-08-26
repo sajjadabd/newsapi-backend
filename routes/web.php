@@ -34,7 +34,8 @@ Route::get('/user', [AuthController::class, 'user']);
 
 Route::post('/preferences', [UserController::class, 'getPreferences']);
 Route::put('/preferences', [UserController::class, 'updatePreferences']);
-Route::get('/articles', [ArticleController::class, 'getArticles']);
+
+Route::post('/articles', [ArticleController::class, 'getArticles']);
 
 /*
 Route::middleware('auth:api')->group(function () {
