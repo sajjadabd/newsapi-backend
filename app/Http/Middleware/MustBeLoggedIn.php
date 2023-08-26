@@ -15,6 +15,22 @@ class MustBeLoggedIn
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $access_token = $request->bearerToken(); // Get the access token from the request
+
+        if ($access_token) {
+            // Find the user based on the provided access token
+            $user = User::where('access_token', $access_token)->first();
+
+            if ($user) {
+                
+                return $next($request);
+
+            }
+        }
+
+        
+        return response()->json([
+            'message' => 'you must be logged in'
+        ])
     }
 }
