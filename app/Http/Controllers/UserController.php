@@ -66,14 +66,14 @@ class UserController extends Controller
             if ($user) {
                 
                 
-                $user->sources()->detach();
-                $user->categories()->detach();
-                
-                $user->sources()->attach($request['sources']);
-                $user->categories()->attach($request['categories']);
+                // $user->sources()->detach();
+                // $user->categories()->detach();
 
-                //$user->sources()->sync($request['sources']);
-                //$user->categories()->sync($request['categories']);
+                // $user->sources()->attach($request['sources']);
+                // $user->categories()->attach($request['categories']);
+
+                $user->sources()->sync($request['sources']);
+                $user->categories()->sync($request['categories']);
 
             }
         }
