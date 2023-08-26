@@ -12,8 +12,8 @@ class Category extends Model
     protected $guarded  = [];
 
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'user_categories_table', 'category_id', 'user_id');
-    }
+    // public function users()
+    // {
+    //     return $this->belongsToMany(User::class, 'user_categories_table', 'category_id', 'user_id');
+    // }
 }
