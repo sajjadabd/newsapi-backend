@@ -32,7 +32,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/user', [AuthController::class, 'user']);
 
-Route::get('/preferences', [UserController::class, 'getPreferences']);
+Route::post('/preferences', [UserController::class, 'getPreferences']);
 Route::put('/preferences', [UserController::class, 'updatePreferences']);
 Route::get('/articles', [ArticleController::class, 'getArticles']);
 
