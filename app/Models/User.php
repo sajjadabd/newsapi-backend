@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function categories()
     {
-        return $this->hasMany(Category::class, 'user_categories_table', 'user_id', 'category_id')->withTimestamps();
+        return $this->hasMany(Category::class, 'user_categories_table', 'user_id', 'category_id');
     }
 
     // public function authors()
