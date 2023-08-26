@@ -59,12 +59,12 @@ class User extends Authenticatable
     // User.php
     public function sources()
     {
-        return $this->belongsToMany(Source::class, 'user_sources_table', 'user_id', 'source_id');
+        return $this->hasMany(Source::class, 'user_sources_table', 'user_id', 'source_id');
     }
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'user_categories_table', 'user_id', 'category_id')->withTimestamps();
+        return $this->hasMany(Category::class, 'user_categories_table', 'user_id', 'category_id')->withTimestamps();
     }
 
     // public function authors()
