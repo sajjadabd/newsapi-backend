@@ -29,6 +29,8 @@ class UserController extends Controller
                     'success' => 'true',
                     'sources' => $sources,
                     'categories' => $categories,
+                    'user_sources' => $user->sources,
+                    'user_categories' => $user->categories,
                 ]);
             }
         }
@@ -63,9 +65,13 @@ class UserController extends Controller
 
             if ($user) {
                 
-
                 //UserSource::
+                //$user->sources()->attach($request['sources']);
+                //$user->categories()->attach($request['categories']);
                 
+                $user->sources()->sync($request['sources']);
+                $user->categories()->sync($request['categories']);
+
             }
         }
 
