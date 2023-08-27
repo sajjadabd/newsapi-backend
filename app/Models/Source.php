@@ -18,9 +18,4 @@ class Source extends Model
         return $this->hasMany(Article::class);
     }
 
-
-    // public function users()
-    // {
-    //     return $this->belongsToMany(User::class, 'user_sources_table', 'source_id', 'user_id');
-    // }
 }
