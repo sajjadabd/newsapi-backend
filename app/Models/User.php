@@ -68,36 +68,4 @@ class User extends Authenticatable
     }
 
 
-
-    /*
-
-    // User.php
-    public function sources() : HasManyThrough
-    {
-        // return $this->hasMany(Source::class, 'user_sources_table', 'user_id', 'source_id');
-
-        return $this->hasManyThrough(
-            UserSource::class,
-            Source::class,
-            'id', // Foreign key on the environments table...
-            'user_id', // Foreign key on the deployments table...
-            'id', // Local key on the projects table...
-            'source_id' // Local key on the environments table...
-        );
-    
-    }
-
-    public function categories()
-    {
-        return $this->hasMany(Category::class, 'user_categories_table', 'user_id', 'category_id');
-    }
-
-    // public function authors()
-    // {
-    //     return $this->hasMany(Author::class, 'user_authors');
-    // }
-
-
-    */
-
 }
