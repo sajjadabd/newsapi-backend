@@ -62,21 +62,13 @@ class AuthController extends Controller
 
     public function validateToken(Request $request)
     {
-        $request->validate([
-            'access_token' => ['required'],
-        ]);
+        $user = $request->user;
 
-        $access_token = $request->input('access_token');
-
-        if ($access_token) {
-            $user = User::where('access_token', $access_token)->first();
-
-            if ($user) {
-                return response()->json([
-                    'user' => new UserResource($user),
-                    'valid' => true
-                ]);
-            }
+        if ($user) {
+            return response()->json([
+                'user' => new UserResource($user),
+                'valid' => true
+            ]);
         }
 
         return response()->json(['valid' => false]);
@@ -117,20 +109,15 @@ class AuthController extends Controller
     // logout a user method
     public function logout(Request $request) {
 
-        $access_token = $request->bearerToken(); // Get the access token from the request
+        $user = $request->user;
 
-        if ($access_token) {
-            // Find the user based on the provided access token
-            $user = User::where('access_token', $access_token)->first();
-
-            if ($user) {
-                // Delete the access token from the user's record
-                $user->update(['access_token' => null]);
-                return response()->json([
-                    'success' => 'true',
-                    'message' => 'Logged out successfully'
-                ]);
-            }
+        if ($user) {
+            // Delete the access token from the user's record
+            $user->update(['access_token' => null]);
+            return response()->json([
+                'success' => 'true',
+                'message' => 'Logged out successfully'
+            ]);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -142,26 +129,5 @@ class AuthController extends Controller
     }
 
 
-
-
-    // login a user method
-    public function login1(LoginRequest $request) {
-        $data = $request->validated();
-
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Email or password is incorrect!'
-            ], 401);
-        }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-
-        return response()->json([
-            'user' => new UserResource($user),
-        ]);
-    }
 
 }

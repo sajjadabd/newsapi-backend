@@ -26,34 +26,21 @@ Route::get('/', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/validate-token', [AuthController::class, 'validateToken']);
-
-Route::post('/logout', [AuthController::class, 'logout']);
-
-Route::get('/user', [AuthController::class, 'user']);
-
-// Route::post('/preferences', [UserController::class, 'getPreferences']);
-// Route::put('/preferences', [UserController::class, 'updatePreferences']);
-
-
 
 
 Route::middleware('mustBeLoggedInWithBearerToken')->group(function () {
+
+
+    Route::post('/validate-token', [AuthController::class, 'validateToken']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+
+
+
     Route::post('/preferences', [UserController::class, 'getPreferences']);
     Route::put('/preferences', [UserController::class, 'updatePreferences']);
     Route::post('/articles', [ArticleController::class, 'getArticles']);
 });
 
-/*
-Route::middleware('auth:api')->group(function () {
-    Route::get('/preferences', 'UserController@getPreferences');
-    Route::put('/preferences', 'UserController@updatePreferences');
-    Route::get('/articles', 'ArticleController@getArticles');
-});
-*/
 
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    
-});
