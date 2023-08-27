@@ -18,13 +18,6 @@ return new class extends Migration
             $table->foreignId('source_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             
-            /*
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->unsignedBigInteger('source_id');
-            $table->foreign('source_id')->refrences('id')->on('sources');
-            $table->timestamps();
-            */
         });
     }
 
