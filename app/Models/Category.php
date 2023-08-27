@@ -18,9 +18,4 @@ class Category extends Model
         return $this->belongsToMany(Article::class);
     }
 
-
-    // public function users()
-    // {
-    //     return $this->belongsToMany(User::class, 'user_categories_table', 'category_id', 'user_id');
-    // }
 }
