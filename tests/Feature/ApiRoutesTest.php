@@ -11,6 +11,7 @@ use \App\Models\User;
 class ApiRoutesTest extends TestCase
 {
     use RefreshDatabase;
+    
     /**
      * A basic feature test example.
      */
@@ -31,7 +32,7 @@ class ApiRoutesTest extends TestCase
 
         $response = $this->postJson('/api/register', $userData);
 
-        $response->assertStatus(200); // successful registration returns 201 Created status
+        $response->assertStatus(200); 
         
     }
 
@@ -50,6 +51,6 @@ class ApiRoutesTest extends TestCase
 
         $response = $this->postJson('/api/login', $loginData);
 
-        $response->assertStatus(200); // successful login returns 200 OK status
+        $response->assertStatus(200); 
     }
 }
