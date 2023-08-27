@@ -17,15 +17,14 @@ class AuthController extends Controller
 
     private function generateAccessToken()
     {
-        // Generate a unique access token using any logic you prefer
-        return bin2hex(random_bytes(32)); // Example: Generating a random hex token
+        return bin2hex(random_bytes(32)); // Generating a random hex token
     }
 
 
     private function generateAndSaveAccessToken(User $user)
     {
-        // Generate a unique access token using any logic you prefer
-        $access_token = $this->generateAccessToken(); // Example: Generating a random hex token
+        // Generate a unique access token using 
+        $access_token = $this->generateAccessToken(); 
         $user->update(['access_token' => $access_token]);
         
         return $access_token;
@@ -89,8 +88,6 @@ class AuthController extends Controller
         
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
-            //$token = $user->createToken('access_token')->plainTextToken;
             
             $access_token = $this->generateAndSaveAccessToken($user);
 
@@ -112,7 +109,7 @@ class AuthController extends Controller
         $user = $request->user;
 
         if ($user) {
-            // Delete the access token from the user's record
+            // clear the access token from the user's record
             $user->update(['access_token' => null]);
             return response()->json([
                 'success' => 'true',
