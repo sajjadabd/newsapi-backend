@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use \App\Models\User;
+
 class MustBeLoggedInWithBearerToken
 {
     /**
@@ -22,6 +24,8 @@ class MustBeLoggedInWithBearerToken
             $user = User::where('access_token', $access_token)->first();
 
             if ($user) {
+
+                $request->merge(['user' => $user]);
                 
                 return $next($request);
 
@@ -31,6 +35,6 @@ class MustBeLoggedInWithBearerToken
         
         return response()->json([
             'message' => 'you must be logged in'
-        ])
+        ]);
     }
 }

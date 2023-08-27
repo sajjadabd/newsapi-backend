@@ -34,7 +34,7 @@ class ArticleController extends Controller
                 // ->whereHas('categories', function ($query) use ($preferredCategories) {
                 //     $query->whereIn('id', $preferredCategories);
                 // })
-                ->orderBy('published_at', 'desc')
+                //->orderBy('published_at', 'desc')
                 // ->take(10) // Limit the number of articles
                 ->get();
 

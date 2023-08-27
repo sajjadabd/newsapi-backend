@@ -14,28 +14,18 @@ class UserController extends Controller
     {
         // Fetch user preferences from the database
 
-        $access_token = $request->bearerToken(); // Get the access token from the request
-
-        if ($access_token) {
-            // Find the user based on the provided access token
-            $user = User::where('access_token', $access_token)->first();
-
-            if ($user) {
-                
-                $sources = Source::all();
-                $categories = Category::all();
-
-                return response()->json([
-                    'success' => 'true',
-                    'sources' => $sources,
-                    'categories' => $categories,
-                    'user_sources' => $user->sources,
-                    'user_categories' => $user->categories,
-                ]);
-            }
-        }
-
-        // Return preferences in the response
+        $user = $request->user;
+        
+        $sources = Source::all();
+        $categories = Category::all();
+        
+        return response()->json([
+            'success' => true,
+            'sources' => $sources,
+            'categories' => $categories,
+            'user_sources' => $user->sources,
+            'user_categories' => $user->categories,
+        ]);
 
 
 
@@ -44,44 +34,20 @@ class UserController extends Controller
     // Update user's preferences
     public function updatePreferences(Request $request)
     {
-        // Validate request data
         $validated = $request->validate([
-            'sources' => 'required',
-            'categories' => 'required',
+            'sources' => 'required|array',
+            'categories' => 'required|array',
         ]);
 
-        // Update user preferences in the database
-
-
-        // Fetch user preferences from the database
-
-        $access_token = $request->bearerToken(); // Get the access token from the request
-
-
-
-        if ($access_token) {
-            // Find the user based on the provided access token
-            $user = User::where('access_token', $access_token)->first();
-
-            if ($user) {
-                
-                
-                // $user->sources()->detach();
-                // $user->categories()->detach();
-
-                // $user->sources()->attach($request['sources']);
-                // $user->categories()->attach($request['categories']);
-
-                $user->sources()->sync($request['sources']);
-                $user->categories()->sync($request['categories']);
-
-            }
-        }
-
-
-        // Return a success response
-
+        $user = $request->user;
         
+        $user->sources()->sync($validated['sources']);
+        $user->categories()->sync($validated['categories']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Preferences updated successfully.',
+        ]);
 
     }
 }

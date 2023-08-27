@@ -32,10 +32,16 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/user', [AuthController::class, 'user']);
 
-Route::post('/preferences', [UserController::class, 'getPreferences']);
-Route::put('/preferences', [UserController::class, 'updatePreferences']);
+// Route::post('/preferences', [UserController::class, 'getPreferences']);
+// Route::put('/preferences', [UserController::class, 'updatePreferences']);
 
 Route::post('/articles', [ArticleController::class, 'getArticles']);
+
+
+Route::middleware('mustBeLoggedInWithBearerToken')->group(function () {
+    Route::post('/preferences', [UserController::class, 'getPreferences']);
+    Route::put('/preferences', [UserController::class, 'updatePreferences']);
+});
 
 /*
 Route::middleware('auth:api')->group(function () {
