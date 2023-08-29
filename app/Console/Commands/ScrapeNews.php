@@ -10,6 +10,8 @@ use \App\Models\Article;
 use \App\Models\Source;
 use \App\Models\Category;
 
+use Carbon\Carbon;
+
 class ScrapeNews extends Command
 {
     /**
@@ -88,7 +90,8 @@ class ScrapeNews extends Command
                     'description' => $article->description,
                     'source' => $article->source->name,
                     'source_id' => $source->id,
-                    'publishedAt' => $article->publishedAt,
+                    // 'publishedAt' => $article->publishedAt,
+                    'publishedAt' => Carbon::parse($article->publishedAt)->format('Y-m-d'),
                     'url' => $article->url,
                     'urlToImage' => $article->urlToImage,
                     'content' => $article->content,
