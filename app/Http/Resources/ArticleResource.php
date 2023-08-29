@@ -5,6 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use Carbon\Carbon;
+
 class ArticleResource extends JsonResource
 {
     /**
@@ -26,7 +28,7 @@ class ArticleResource extends JsonResource
             'urlToImage' => $this->urlToImage,
             'publishedAt' => $this->publishedAt,
             'content' => $this->content,
-            'diffForHumans' => $this->created_at->diffForHumans();,
+            'diffForHumans' => Carbon::parse($this->publishedAt)->diffForHumans(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

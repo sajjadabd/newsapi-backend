@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use \App\Models\User;
 use \App\Models\Article;
 
+use App\Http\Resources\ArticleResource;
+
 class ArticleController extends Controller
 {
     // Get articles based on user's preferences
@@ -21,9 +23,10 @@ class ArticleController extends Controller
             $query->whereIn('id', $preferredSources);
         })->get();
 
+        $articleResources = ArticleResource::collection($articles);
 
         return response()->json([
-            'articles' => $articles ,
+            'articles' => $articleResources ,
             'userSources' => $user->sources,
             'userCategories' => $user->categories,
         ]);
