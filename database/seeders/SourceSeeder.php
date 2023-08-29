@@ -14,6 +14,23 @@ class SourceSeeder extends Seeder
      */
     public function run(): void
     {
+        // 'bbc-news', 
+        // 'cnn', 
+        // 'reuters', 
+        // 'abc-news',
+        // 'bloomberg',
+        // 'cbs-news',
+        // 'fox-news',
+        // 'google-news',
+        // 'hacker-news',
+        // 'independent',
+        // 'msnbc',
+        // 'nbc-news',
+        // 'rt',
+        // 'the-washington-post',
+        // 'time',
+        // 'vice-news',
+        // 'wired',
         $sources = [
             [
                 'slug' => 'bbc-news',
@@ -27,6 +44,10 @@ class SourceSeeder extends Seeder
                 'slug' => 'reuters',
                 'title' => 'Reuters',
             ],
+            [
+                'slug' => 'vice-news',
+                'title' => 'VICE News'
+            ]
         ];
 
         foreach ($sources as $source) {
