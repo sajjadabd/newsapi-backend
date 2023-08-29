@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unzip \
+    sqlite3 \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd zip pdo pdo_mysql
 
@@ -30,16 +31,16 @@ COPY . .
 # Copy the .env file for Laravel configuration
 COPY .env.example .env
 
+# Create SQLite database
+RUN touch database/database.sqlite
+
 # Generate the application key
 RUN php artisan key:generate
 
 # Run database migrations and seeders
 RUN php artisan migrate
-
 RUN php artisan db:seed --class=CategorySeeder
-
 RUN php artisan db:seed --class=SourceSeeder
-
 RUN php artisan app:scrape-news
 
 # Generate autoload files
