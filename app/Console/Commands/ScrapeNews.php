@@ -88,6 +88,10 @@ class ScrapeNews extends Command
                     'description' => $article->description,
                     'source' => $article->source->name,
                     'source_id' => $source->id,
+                    'publishedAt' => $article->publishedAt,
+                    'url' => $article->url,
+                    'urlToImage' => $article->urlToImage,
+                    'content' => $article->content,
                 ]);
             }
 

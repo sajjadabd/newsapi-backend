@@ -24,6 +24,8 @@ class ArticleController extends Controller
 
         return response()->json([
             'articles' => $articles ,
+            'userSources' => $user->sources,
+            'userCategories' => $user->categories,
         ]);
         
     }
