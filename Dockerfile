@@ -28,6 +28,11 @@ WORKDIR /var/www/html
 # Copy your Laravel app files to the working directory
 COPY . .
 
+# Create the SQLite database file
+RUN touch database/database.sqlite
+RUN chmod 777 database/database.sqlite
+
+
 # Install Laravel dependencies
 RUN composer install --no-scripts --no-autoloader
 
@@ -40,8 +45,19 @@ RUN chown -R www-data:www-data storage
 # Copy Nginx configuration
 COPY nginx/default.conf /etc/nginx/sites-available/default
 
+
+# Run Laravel migrations
+RUN php artisan migrate
+
+# Seed the database
+RUN php artisan db:seed --class=CategorySeeder
+RUN php artisan db:seed --class=SourceSeeder
+
+
+RUN php artisan app:scrape-news
+
 # Expose port 80
-EXPOSE 80
+EXPOSE 8080
 
 # Start PHP-FPM and Nginx
 CMD service php8.1-fpm start && nginx -g "daemon off;"
