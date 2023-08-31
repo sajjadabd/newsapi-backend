@@ -35,8 +35,8 @@ class UserController extends Controller
     public function updatePreferences(Request $request)
     {
         $validated = $request->validate([
-            'sources' => 'required|array',
-            'categories' => 'required|array',
+            'sources' => 'array',
+            'categories' => 'array',
         ]);
 
         $user = $request->user;
