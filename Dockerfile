@@ -2,15 +2,21 @@
 #FROM ubuntu:mantic-20230807.1
 FROM ubuntu:latest
 #FROM ubuntu:23.10
+#FROM ubuntu:22.04
 
-# Set environment variables
+
+
+
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Set environment variable to allow Composer plugins to run as super user
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+ENV NEWS_API_KEY=f71de8cb09154514b61ea8fded1f960d
 
 
+RUN sed --in-place --regexp-extended "s/(\/\/)(archive\.ubuntu)/\1ru.\2/" /etc/apt/sources.list
 
 # Update and install dependencies
 RUN apt-get update --fix-missing && apt-get upgrade -y
@@ -37,6 +43,8 @@ WORKDIR /var/www/html
 
 # Copy your Laravel app files to the working directory
 COPY . .
+COPY .env.example .env
+
 
 # Create the SQLite database file
 RUN touch database/database.sqlite
@@ -63,12 +71,14 @@ RUN composer dump-autoload
 COPY nginx/default.conf /etc/nginx/sites-available/default
 
 
+
+RUN php artisan key:generate
 # Run Laravel migrations
-RUN php artisan migrate:fresh
+RUN php artisan migrate:fresh --force
 
 # Seed the database
-RUN php artisan db:seed --class=CategorySeeder
-RUN php artisan db:seed --class=SourceSeeder
+RUN php artisan db:seed --class=CategorySeeder --force
+RUN php artisan db:seed --class=SourceSeeder --force
 
 
 RUN php artisan app:scrape-news
